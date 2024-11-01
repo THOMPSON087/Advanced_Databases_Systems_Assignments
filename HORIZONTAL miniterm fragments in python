@@ -1,0 +1,32 @@
+class MinitermGenerator:
+    def __init__(self, predicates):
+        self.predicates = predicates
+    
+    def generate_fragments(self):
+        #empty fragment
+        fragments = ['']
+        
+        # For each predicate, creating new fragments by adding it and its negation
+        for p in self.predicates:
+            new_fragments = []
+            for f in fragments:
+                # Adding predicate
+                new_fragments.append(f + p + ' AND ' if f else p + ' AND ')
+                # Adding negated predicate
+                new_fragments.append(f + 'NOT ' + p + ' AND ' if f else 'NOT ' + p + ' AND ')
+            fragments = new_fragments
+        
+        # Remove trailing 'AND' from each fragment
+        fragments = [f[:-5] for f in fragments]
+        return fragments
+
+    def print_fragments(self):
+        fragments = self.generate_fragments()
+        print("Miniterm Fragments:")
+        for i, f in enumerate(fragments, 1):
+            print(f"{i}. {f}")
+
+# Example usage:
+predicates = ['A', 'B']
+generator = MinitermGenerator(predicates)
+generator.print_fragments()
