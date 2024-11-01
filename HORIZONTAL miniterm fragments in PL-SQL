@@ -1,0 +1,47 @@
+CREATE OR REPLACE TYPE MinitermFragment AS OBJECT (
+    fragment VARCHAR2(1000)
+);
+/
+
+CREATE OR REPLACE TYPE MinitermFragmentList AS TABLE OF MinitermFragment;
+/
+
+CREATE OR REPLACE PACKAGE MinitermGenerator AS
+    FUNCTION generate_fragments(predicates IN SYS.ODCIVARCHAR2LIST)
+    RETURN MinitermFragmentList;
+END MinitermGenerator;
+/
+
+CREATE OR REPLACE PACKAGE BODY MinitermGenerator AS
+    FUNCTION generate_fragments(predicates IN SYS.ODCIVARCHAR2LIST)
+    RETURN MinitermFragmentList IS
+        fragments MinitermFragmentList;
+        new_fragments MinitermFragmentList;
+        temp_fragment VARCHAR2(1000);
+    BEGIN
+        fragments := MinitermFragmentList(MinitermFragment(''));
+        
+        FOR i IN 1..predicates.COUNT LOOP
+            new_fragments := MinitermFragmentList();
+            
+            FOR j IN 1..fragments.COUNT LOOP
+                temp_fragment := fragments(j).fragment;
+                IF temp_fragment IS NOT NULL THEN
+                    temp_fragment := temp_fragment || ' AND ';
+                END IF;
+                new_fragments.EXTEND;
+                new_fragments(new_fragments.LAST) := 
+                    MinitermFragment(temp_fragment || predicates(i));
+                
+                new_fragments.EXTEND;
+                new_fragments(new_fragments.LAST) := 
+                    MinitermFragment(temp_fragment || 'NOT ' || predicates(i));
+            END LOOP;
+            
+            fragments := new_fragments;
+        END LOOP;
+        
+        RETURN fragments;
+    END generate_fragments;
+END MinitermGenerator;
+/
