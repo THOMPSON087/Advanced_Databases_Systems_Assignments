@@ -1,0 +1,42 @@
+-- 1. Capitalize the first letter of each word in a string
+SELECT INITCAP('hello world from sql') AS CapitalizedString;
+
+-- 2. Convert the current date to 'YYYY-MM-DD HH24:MI' format
+-- MySQL:
+SELECT DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i') AS FormattedDate;
+-- PostgreSQL/Oracle:
+SELECT TO_CHAR(NOW(), 'YYYY-MM-DD HH24:MI') AS FormattedDate;
+
+-- 3. Round the number 123.4567 to 2 decimal places
+SELECT ROUND(123.4567, 2) AS RoundedNumber;
+
+-- 4. Check if the salary of employees is above or below 3000, returning 'Above' or 'Below'
+SELECT Emp_id, 
+       CASE WHEN salary > 3000 THEN 'Above' ELSE 'Below' END AS SalaryStatus
+FROM Employees;
+
+-- 5. Concatenate the first name and last name of employees with a space between them
+SELECT CONCAT(Emp_F_name, ' ', Emp_L_name) AS FullName
+FROM Employees;
+
+-- 6. Extract the domain name from an email address
+SELECT SUBSTRING(email, INSTR(email, '@') + 1) AS DomainName
+FROM Employees;
+
+-- 7. Find the length of the longest first name in the employees table
+SELECT MAX(LENGTH(Emp_F_name)) AS LongestFirstNameLength
+FROM Employees;
+
+-- 8. Format the number 1234567.89 to '1,234,567.89'
+-- MySQL:
+SELECT FORMAT(1234567.89, 2) AS FormattedNumber;
+-- PostgreSQL/Oracle:
+SELECT TO_CHAR(1234567.89, 'FM999,999,999.00') AS FormattedNumber;
+
+-- 9. Replace null values in the commission column with 0
+SELECT COALESCE(commission, 0) AS Commission
+FROM Employees;
+
+-- 10. Add 45 days to the hire date of employees and return the new date
+SELECT Emp_id, hire_date, hire_date + INTERVAL '45' DAY AS NewHireDate
+FROM Employees;
