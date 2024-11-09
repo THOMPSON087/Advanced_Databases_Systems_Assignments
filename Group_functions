@@ -1,0 +1,47 @@
+-- Total Salary by Department
+SELECT department_id, SUM(salary) AS total_salary
+FROM employees
+GROUP BY department_id;
+
+-- Average Salary by Job
+SELECT job_title, AVG(salary) AS average_salary
+FROM employees
+GROUP BY job_title;
+
+-- Employee Count by Department
+SELECT department_id, COUNT(*) AS employee_count
+FROM employees
+GROUP BY department_id;
+
+-- Maximum Salary by Department
+SELECT department_id, MAX(salary) AS max_salary
+FROM employees
+GROUP BY department_id;
+
+-- Minimum Salary by Department
+SELECT department_id, MIN(salary) AS min_salary
+FROM employees
+GROUP BY department_id;
+
+-- Average Salary Across All Employees
+SELECT AVG(salary) AS average_salary
+FROM employees;
+
+-- Total Salary Paid
+SELECT SUM(salary) AS total_salary
+FROM employees;
+
+-- Count of Employees with Commission
+SELECT COUNT(*) AS employees_with_commission
+FROM employees
+WHERE commission_pct IS NOT NULL;
+
+-- Count of Employees by Job Title
+SELECT job_title, COUNT(*) AS employee_count
+FROM employees
+GROUP BY job_title;
+
+-- Total Salary by Manager
+SELECT manager_id, SUM(salary) AS total_salary
+FROM employees
+GROUP BY manager_id;
